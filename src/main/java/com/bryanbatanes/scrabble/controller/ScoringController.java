@@ -4,6 +4,7 @@ import com.bryanbatanes.scrabble.dto.LetterPointsResponse;
 import com.bryanbatanes.scrabble.dto.SaveScoreRequest;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.service.ScoringService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -60,7 +61,7 @@ public class ScoringController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/scores")
-    public Long saveScore(@RequestBody SaveScoreRequest request) {
+    public Long saveScore(@Valid @RequestBody SaveScoreRequest request) {
         log.info("CALL >> post /scores");
         return scoringService.saveScore(request);
     }

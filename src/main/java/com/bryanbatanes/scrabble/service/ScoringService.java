@@ -7,7 +7,6 @@ import com.bryanbatanes.scrabble.model.LetterPoints;
 import com.bryanbatanes.scrabble.model.LetterPointsRepository;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.model.ScoresRepository;
-import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -31,11 +30,6 @@ public class ScoringService {
     private JdbcTemplate jdbcTemplate;
 
     private Integer calculateScore(String word) {
-        if(StringUtils.isBlank(word)) {
-            log.error("Invalid user input [{}]", word);
-            throw new RuntimeException("User Input is Invalid");
-        }
-
         List<LetterPoints> pointList = pointsRepo.findAll();
 
         Map<Character, Integer> pointMap = CollectionUtils.emptyIfNull(pointList).stream()
@@ -73,6 +67,7 @@ public class ScoringService {
 
     @Transactional
     public Long saveScore(SaveScoreRequest request) {
+
         String word = request.getWord().toUpperCase(Locale.ENGLISH);
         log.info("IN >> Start saving score for word [{}]", word);
         Integer score = calculateScore(word);
