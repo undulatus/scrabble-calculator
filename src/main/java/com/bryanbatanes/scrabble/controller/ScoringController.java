@@ -31,8 +31,16 @@ public class ScoringController {
     @PostMapping("/letterpoints/setup")
     public String setupScoringSystem(@RequestBody Map<Integer,
                 List<Character>> request) {
-        log.info("CALL >> post /letterpoints");
+        log.info("CALL >> post /letterpoints/setup");
         scoringService.setupPoints(request);
+        return "success";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/letterpoints/remove")
+    public String removeScoringSystem() {
+        log.info("CALL >> delete /letterpoints/remove");
+        scoringService.removePointsData();
         return "success";
     }
 
@@ -41,6 +49,13 @@ public class ScoringController {
     public List<Scores> fetchAllScores() {
         log.info("CALL >> get /scores");
         return scoringService.fetchAllScores();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/scores/top10")
+    public List<Scores> fetchAllTop10Scores() {
+        log.info("CALL >> get /scores/top10");
+        return scoringService.fetchTop10Scores();
     }
 
     @ResponseStatus(HttpStatus.CREATED)

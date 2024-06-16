@@ -12,13 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,6 +27,8 @@ public class ScoringService {
     private LetterPointsRepository pointsRepo;
 
     private ScoresRepository scoresRepo;
+
+    private JdbcTemplate jdbcTemplate;
 
     private Integer calculateScore(String word) {
         if(StringUtils.isBlank(word)) {
@@ -73,7 +73,7 @@ public class ScoringService {
 
     @Transactional
     public Long saveScore(SaveScoreRequest request) {
-        String word = request.getWord();
+        String word = request.getWord().toUpperCase(Locale.ENGLISH);
         log.info("IN >> Start saving score for word [{}]", word);
         Integer score = calculateScore(word);
         log.info("Score calculated [{}]", score);
@@ -89,7 +89,7 @@ public class ScoringService {
     }
 
     public List<Scores> fetchAllScores() {
-        log.info("IN >> fetching current scores");
+        log.info("IN >> fetching all scores");
         Sort sorted = Sort.by(
                 Sort.Order.desc("score"),
                 Sort.Order.desc("createdDate")
@@ -100,6 +100,43 @@ public class ScoringService {
         return allScores;
     }
 
+    public List<Scores> fetchTop10Scores() {
+        log.info("IN >> fetching top 10 scores");
+        List<Scores> allScores = fetchAllScores();
+
+        List<Scores> top10Scores = new ArrayList<>();
+        int limit = 10;
+        int iteration = 0, prevPoint = 0, curPoint = 0;
+        while(iteration <= limit && iteration <= allScores.size()-1) {
+            Scores score = allScores.get(iteration);
+            if(iteration == 0) {
+                prevPoint = score.getScore();
+            }
+            curPoint = score.getScore();
+            //continue adding until minimum 10 is achieved
+            if(iteration <= 9) {
+                top10Scores.add(score);
+            }
+            //check if limit needs to increase for tie breakers and add to list if tied to previous
+            if(iteration > 9 && prevPoint == curPoint) {
+                limit++;
+                top10Scores.add(score);
+            }
+            //set curPoint as new prevPoint on next iteration
+            prevPoint = curPoint;
+            iteration++;
+        }
+
+        log.info("OUT >> fetching top 10 scores count is [{}], the object [{}] ",top10Scores.size(), top10Scores);
+        return top10Scores;
+    }
+
+    @Transactional
+    public void removePointsData() {
+        pointsRepo.deleteAll();
+        jdbcTemplate.execute("ALTER SEQUENCE letter_points_id_seq RESTART WITH 1");
+    }
+
     /**
      * call once for setting up point system
      * @param pointSetup
@@ -107,12 +144,13 @@ public class ScoringService {
     @Transactional
     public void setupPoints(Map<Integer, List<Character>> pointSetup) {
         log.info("IN >> Setting up point system [{}]", pointSetup);
-        pointsRepo.deleteAll();
+        removePointsData();
+
         pointSetup.keySet().forEach(point -> {
             pointSetup.get(point).forEach(letter -> {
                 LetterPoints entry = LetterPoints.builder()
                         .points(point)
-                        .letter(letter)
+                        .letter(Character.toUpperCase(letter))
                         .build();
                 pointsRepo.save(entry);
             });
