@@ -46,6 +46,7 @@ public class ScoringService {
     public LetterPointsResponse fetchScoringSystem() {
         log.info("IN >> fetching scoring system");
         Set<Integer> pointSet = pointsRepo.findDistinctPoints();
+        pointSet = pointSet.stream().sorted().collect(Collectors.toSet());
 
         List<LetterPointsMap> responseEntries = new ArrayList<>();
 

@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
+@CrossOrigin
 @RestController
 @RequestMapping("/scrabble")
 public class ScoringController {

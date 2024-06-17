@@ -3,7 +3,6 @@ package com.bryanbatanes.scrabble.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
