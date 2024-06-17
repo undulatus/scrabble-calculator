@@ -54,6 +54,13 @@ public class ScoringController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/scores/calculate")
+    public Integer fetchAllScores(@RequestParam(required = true) String word) {
+        log.info("CALL >> get /scores/calculate");
+        return scoringService.calculateScore(word);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/scores/top10")
     public List<Scores> fetchAllTop10Scores() {
         log.info("CALL >> get /scores/top10");

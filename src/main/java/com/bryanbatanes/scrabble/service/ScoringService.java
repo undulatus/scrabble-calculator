@@ -29,7 +29,7 @@ public class ScoringService {
 
     private JdbcTemplate jdbcTemplate;
 
-    private Integer calculateScore(String word) {
+    public Integer calculateScore(String word) {
         List<LetterPoints> pointList = pointsRepo.findAll();
 
         Map<Character, Integer> pointMap = CollectionUtils.emptyIfNull(pointList).stream()
