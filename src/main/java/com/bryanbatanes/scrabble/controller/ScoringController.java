@@ -2,7 +2,6 @@ package com.bryanbatanes.scrabble.controller;
 
 import com.bryanbatanes.scrabble.dto.LetterPointsResponse;
 import com.bryanbatanes.scrabble.dto.SaveScoreRequest;
-import com.bryanbatanes.scrabble.model.LetterPoints;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.service.ScoringService;
 import jakarta.validation.Valid;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
