@@ -1,7 +1,7 @@
-Scrabble Calculater
+Scrabble Calculator
 =============
 
-This is an exam entry application made by Bryan Matthew Batanes
+This is an exam entry application made by - Bryan Matthew Batanes
 
 Table of Contents
 -----------------
@@ -71,6 +71,13 @@ Configuration
 
 The application uses a configuration file located at `src/main/resources/application.properties`.
 
+Please configure database connection for your local example below
+
+    # Database configuration
+    spring.datasource.url=jdbc:postgresql://localhost:5433/scrabbledb
+    spring.datasource.username=postgres
+    spring.datasource.password=kek3
+    spring.datasource.driver-class-name=org.postgresql.Driver
 
 Usage
 -----
@@ -79,12 +86,14 @@ After starting the application, you can access the API documentation (if using S
 
     http://localhost:8080/swagger-ui.html
 
-Example Endpoints:
+Endpoints:
 
-- `GET /api/items` - Retrieve all items
-- `GET /api/items/{id}` - Retrieve an item by ID
-- `POST /api/items` - Create a new item
-- `PUT /api/items/{id}` - Update an existing item
-- `DELETE /api/items/{id}` - Delete an item by ID
+- `GET /scrabble/scores` - Fetch all scores saved
+- `POST /scrabble/scores` - Save the current word's score
+- `POST /scrabble/letterpoints/setup` - Create letters and points scoring system
+- `GET/scrabble/scores/top10` - Fetch all top 10 scores in descending points order
+- `GET /scrabble/scores/calculate` - Calculate score of the word
+- `GET /scrabble/letterpoints` - Fetch letters and points scoring system
+- `DELETE /scrabble/letterpoints/remove` - Remove existing letters and points scoring system
 
 

@@ -4,6 +4,7 @@ import com.bryanbatanes.scrabble.dto.LetterPointsResponse;
 import com.bryanbatanes.scrabble.dto.SaveScoreRequest;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.service.ScoringService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class ScoringController {
 
     private ScoringService scoringService;
 
+    @Operation(summary = "Fetch letters and points scoring system")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/letterpoints")
     public LetterPointsResponse fetchLetterPoints() {
@@ -29,6 +31,7 @@ public class ScoringController {
         return scoringService.fetchScoringSystem();
     }
 
+    @Operation(summary = "Create letters and points scoring system")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/letterpoints/setup")
     public String setupScoringSystem(@RequestBody Map<Integer,
@@ -38,6 +41,7 @@ public class ScoringController {
         return "success";
     }
 
+    @Operation(summary = "Remove existing letters and points scoring system")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/letterpoints/remove")
     public String removeScoringSystem() {
@@ -46,6 +50,7 @@ public class ScoringController {
         return "success";
     }
 
+    @Operation(summary = "Fetch all scores saved")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/scores")
     public List<Scores> fetchAllScores() {
@@ -53,6 +58,7 @@ public class ScoringController {
         return scoringService.fetchAllScores();
     }
 
+    @Operation(summary = "Calculate score of the word")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/scores/calculate")
     public Integer calculateScore(@RequestParam(required = true) String word) {
@@ -60,6 +66,7 @@ public class ScoringController {
         return scoringService.calculateScore(word);
     }
 
+    @Operation(summary = "Fetch all top 10 scores in descending points order")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/scores/top10")
     public List<Scores> fetchAllTop10Scores() {
@@ -67,6 +74,7 @@ public class ScoringController {
         return scoringService.fetchTop10Scores();
     }
 
+    @Operation(summary = "Save the current word's score")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/scores")
     public Long saveScore(@Valid @RequestBody SaveScoreRequest request) {
