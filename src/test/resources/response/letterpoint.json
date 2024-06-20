@@ -1,0 +1,65 @@
+{
+  "letterPoints": [
+    {
+      "points": 1,
+      "letters": [
+        "A",
+        "E",
+        "I",
+        "O",
+        "U",
+        "L",
+        "N",
+        "S",
+        "T",
+        "R"
+      ]
+    },
+    {
+      "points": 2,
+      "letters": [
+        "D",
+        "G"
+      ]
+    },
+    {
+      "points": 3,
+      "letters": [
+        "B",
+        "C",
+        "M",
+        "P"
+      ]
+    },
+    {
+      "points": 4,
+      "letters": [
+        "F",
+        "H",
+        "V",
+        "W",
+        "Y"
+      ]
+    },
+    {
+      "points": 6,
+      "letters": [
+        "K"
+      ]
+    },
+    {
+      "points": 8,
+      "letters": [
+        "J",
+        "X"
+      ]
+    },
+    {
+      "points": 10,
+      "letters": [
+        "Q",
+        "Z"
+      ]
+    }
+  ]
+}
