@@ -2,6 +2,7 @@ package com.bryanbatanes.scrabble.controller;
 
 import com.bryanbatanes.scrabble.dto.LetterPointsResponse;
 import com.bryanbatanes.scrabble.dto.SaveScoreRequest;
+import com.bryanbatanes.scrabble.model.LetterPoints;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.service.ScoringService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -72,6 +74,13 @@ public class ScoringController {
     public Long saveScore(@Valid @RequestBody SaveScoreRequest request) {
         log.info("CALL >> post /scores");
         return scoringService.saveScore(request);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/test")
+    public Set<Integer> getTest() {
+        log.info("CALL >> post /test");
+        return scoringService.test();
     }
 
 }

@@ -29,6 +29,16 @@ public class TestUtil {
         return objectMapper.readValue(json, classType);
     }
 
+    //overload to define type for complex type
+    public static <T> T getObjectFromJson(String jsonPath, TypeReference <T> typeRef) throws IOException {
+        String jsonString = getJsonStringFromFile(jsonPath);
+        return jsonToPojo(jsonString, typeRef);
+    }
+
+    public static <T> T jsonToPojo(String json, TypeReference <T> typeRef) throws IOException {
+        return objectMapper.readValue(json, typeRef);
+    }
+
     public static File getFile(String filename) {
         ClassLoader classLoader = TestUtil.class.getClassLoader();
         URL resourceUrl = classLoader.getResource(filename);

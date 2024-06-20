@@ -7,6 +7,7 @@ import com.bryanbatanes.scrabble.model.LetterPoints;
 import com.bryanbatanes.scrabble.model.LetterPointsRepository;
 import com.bryanbatanes.scrabble.model.Scores;
 import com.bryanbatanes.scrabble.model.ScoresRepository;
+import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,7 +30,15 @@ public class ScoringService {
 
     private JdbcTemplate jdbcTemplate;
 
+    public Set<Integer> test() {
+        return pointsRepo.findDistinctPoints();
+    }
+
     public Integer calculateScore(String word) {
+        if(StringUtils.isNotBlank(word)) {
+            word = word.toUpperCase(Locale.ENGLISH);
+        } else return 0;
+
         List<LetterPoints> pointList = pointsRepo.findAll();
 
         Map<Character, Integer> pointMap = CollectionUtils.emptyIfNull(pointList).stream()
@@ -96,6 +105,11 @@ public class ScoringService {
         return allScores;
     }
 
+    /**
+     * I created this logic for top 10 such that tied scores are all of equal rank
+     * and next rank would be the next sequence after counting all tied scores
+     * @return
+     */
     public List<Scores> fetchTop10Scores() {
         log.info("IN >> fetching top 10 scores");
         List<Scores> allScores = fetchAllScores();
