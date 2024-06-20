@@ -10,4 +10,9 @@ class ScrabbleApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void main() {
+		ScrabbleApplication.main(new String[] {});
+	}
+
 }
