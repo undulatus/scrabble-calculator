@@ -75,5 +75,4 @@ public class ScoringController {
         log.info("CALL >> post /scores");
         return scoringService.saveScore(request);
     }
-
 }

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.doNothing;
@@ -167,6 +168,48 @@ public class ScoringControllerTest {
         Long actualResp = Long.parseLong(jsonResp);
 
         assertEquals(expectedResp, actualResp);
+    }
+
+    @Test
+    @DisplayName("POST - saveScore - invalid request body word is blank")
+    void saveScoreInvalid() throws Exception {
+        //given
+        SaveScoreRequest saveScoreRequestBlank = saveScoreRequest.toBuilder()
+                .word("") //blank will give missing error
+                .build();
+
+        String saveScoreRequestBlankJson = TestUtil.getJsonStringFromObject(saveScoreRequestBlank);
+
+        //when
+        String jsonResp = mockMvc.perform(post(SCORES_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(saveScoreRequestBlankJson))
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
+                .andReturn().getResponse().getContentAsString();
+
+        //then
+        assertTrue(jsonResp.contains("input word is missing"));
+    }
+
+    @Test
+    @DisplayName("POST - saveScore - invalid request body word is > 10 chars")
+    void saveScoreInvalidWordTooLong() throws Exception {
+        //given
+        SaveScoreRequest saveScoreRequestWordTooLong = saveScoreRequest.toBuilder()
+                .word("I AM GREATER THAN 10 CHARACTERS") //too long
+                .build();
+
+        String saveScoreRequestWordTooLongJson = TestUtil.getJsonStringFromObject(saveScoreRequestWordTooLong);
+
+        //when
+        String jsonResp = mockMvc.perform(post(SCORES_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(saveScoreRequestWordTooLongJson))
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
+                .andReturn().getResponse().getContentAsString();
+
+        //then
+        assertTrue(jsonResp.contains("please enter up to 10 characters only"));
     }
 
 }
