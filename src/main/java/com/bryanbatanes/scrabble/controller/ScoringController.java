@@ -76,11 +76,4 @@ public class ScoringController {
         return scoringService.saveScore(request);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/test")
-    public Set<Integer> getTest() {
-        log.info("CALL >> post /test");
-        return scoringService.test();
-    }
-
 }

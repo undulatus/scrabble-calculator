@@ -30,10 +30,6 @@ public class ScoringService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public Set<Integer> test() {
-        return pointsRepo.findDistinctPoints();
-    }
-
     public Integer calculateScore(String word) {
         if(StringUtils.isNotBlank(word)) {
             word = word.toUpperCase(Locale.ENGLISH);
